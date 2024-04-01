@@ -62,9 +62,17 @@ The country codes are used to differentiate them.
 
 These rates tables contain daily hazard rates for both sexes. They are derived from annual death probabilities (qₓ's) from the Human Mortality Database at https://www.mortality.org/
 
-solovia_rt = RT_HMD[:SVN]
-# Dayly hazard for a slovenian male (code 0), born on the 1rst of january 1927, 192 days after his 37th birthday.
+
+Dayly hazard for a slovenian male (code 0), born on the 1rst of january 1927, 192 days after his 37th birthday can for example be obtained as follows:
+
+`solovia_rt = RT_HMD[:SVN]`
 `daily_hazard(slovenia_rt, 37*RT_DAYS_IN_YEAR + 192, 1927*RT_DAYS_IN_YEAR + 192, 1)`
+
+The list of availiables countries can be queried via: 
+```julia
+Dict(k => RT_HMD[k].country_name for k in keys(RT_HMD))
+```
+
 """
 const RT_HMD = let
 
