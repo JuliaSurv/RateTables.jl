@@ -1,6 +1,7 @@
 module RateTables
 
-import CSV, HMD, DataFrames
+import CSV
+using DataFrames
 
 const RT_DAYS_IN_YEAR = 365.241
 
@@ -75,8 +76,8 @@ const RT_HMD = let
         df = CSV.read(joinpath(@__DIR__,"..","data","qx",file), DataFrames.DataFrame)
 
         # Transform:
-        tr_Female = HMD.transform(df, :Female)
-        tr_Male = HMD.transform(df, :Male)
+        tr_Female = unstack(select(df, [:Year, :Age, :Female]), :Year, :Female)
+        tr_Male = unstack(select(df, [:Year, :Age, :Male]), :Year, :Male)
 
         # trim years with missing values: 
         tr_Female = tr_Female[!, all.(!ismissing, eachcol(tr_Female))]

@@ -11,13 +11,18 @@ using RData
 
 
     @testset "slopop" begin
-        slopop = HMDRateTables["SVN"] # slovenia's ratetable
+        slopop = RT_HMD[:SVN] # slovenia's ratetable
         # daily hazard for a female (code 1)
         # aged 12 in 1979 (at begining of study)
         # after 37 days of study.
-        daily_hazard(slopop, 12*365.241 + 37, 1979*365.241 + 37, 1)
+        daily_hazard(slopop, 12*365.241 + 37, 1989*365.241 + 37, 1)
     end
+
+    # issue: this rate table from R has not the same sources as the HMD ones... 
+    # So we need to do something else for ratetables used in person-year work in R... 
+    r_slopop = load(joinpath(@__DIR__,"slopop.rda"))["slopop"]
+    
+
 end
 
 
-r_slopop = load("test/slopop.rda")["slopop"]
