@@ -18,6 +18,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/lrnv/RateTables.jl",
+    repo="github.com/lrnv/RateTables.jl.git",
     devbranch="main",
 )
