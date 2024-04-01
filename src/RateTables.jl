@@ -72,7 +72,7 @@ const RT_HMD = let
 
     for file in readdir(joinpath(@__DIR__,"..","data","qx"))
 
-        country_code, country_name = String.(collect(eachsplit(file,"."))[1:2])
+        country_code, country_name = String.(split(file,".")[1:2])
         df = CSV.read(joinpath(@__DIR__,"..","data","qx",file), DataFrames.DataFrame)
 
         # Transform:
