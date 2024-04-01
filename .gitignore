@@ -4,3 +4,5 @@
 /Manifest.toml
 /docs/Manifest.toml
 /docs/build/
+data/death_rates.zip
+data/death_rates/*
