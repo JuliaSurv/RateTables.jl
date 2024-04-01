@@ -15,7 +15,8 @@ This package provides rate tables for person-year computations, alike [R's `rate
 You can install it through : 
 
 ```julia
-] add https://github.com/JuliaSurv/RateTables.jl
+using Pkg
+Pkg.add("https://github.com/JuliaSurv/RateTables.jl")
 ```
 
 Then loading it through 
