@@ -44,3 +44,12 @@ julia>  daily_hazard(RT_HMD[:SVN], 365.241*80, 365.241*2019, 1)
 
 julia> 
 ```
+
+
+Todo : 
+
+- [ ] Add non-HMD rate tables from R packages, whith the same interface. 
+- [ ] life tables with covariates (country is already somewhat of a covariate..)
+- [ ] better proofness to poor inputs (e.g. return missing ? return error?)
+- [ ] better docs
+- [ ] tests
