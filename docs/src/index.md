@@ -9,7 +9,8 @@ Documentation for [RateTables](https://github.com/lrnv/RateTables.jl). This pack
 You can install it through : 
 
 ```julia
-] add https://github.com/JuliaSurv/RateTables.jl
+using Pkg
+Pkg.add("https://github.com/JuliaSurv/RateTables.jl")
 ```
 
 Then loading it through 
