@@ -1,9 +1,9 @@
 # RateTables
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://lrnv.github.io/RateTables.jl/stable/)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://lrnv.github.io/RateTables.jl/dev/)
-[![Build Status](https://github.com/lrnv/RateTables.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/lrnv/RateTables.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![Coverage](https://codecov.io/gh/lrnv/RateTables.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/lrnv/RateTables.jl)
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaSurv.github.io/RateTables.jl/stable/)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://JuliaSurv.github.io/RateTables.jl/dev/)
+[![Build Status](https://github.com/JuliaSurv/RateTables.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/JuliaSurv/RateTables.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/JuliaSurv/RateTables.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaSurv/RateTables.jl)
 [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
 [![ColPrac: Contributor's Guide on Collaborative Practices for Community Packages](https://img.shields.io/badge/ColPrac-Contributor's%20Guide-blueviolet)](https://github.com/SciML/ColPrac)
 [![PkgEval](https://JuliaCI.github.io/NanosoldierReports/pkgeval_badges/R/RateTables.svg)](https://JuliaCI.github.io/NanosoldierReports/pkgeval_badges/R/RateTables.html)

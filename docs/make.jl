@@ -8,7 +8,7 @@ makedocs(;
     authors="Oskar Laverny <oskar.laverny@univ-amu.fr> and contributors",
     sitename="RateTables.jl",
     format=Documenter.HTML(;
-        canonical="https://lrnv.github.io/RateTables.jl",
+        canonical="https://JuliaSurv.github.io/RateTables.jl",
         edit_link="main",
         assets=String[],
     ),
@@ -18,6 +18,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/lrnv/RateTables.jl.git",
+    repo="github.com/JuliaSurv/RateTables.jl.git",
     devbranch="main",
 )

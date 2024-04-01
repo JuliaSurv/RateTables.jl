@@ -4,7 +4,7 @@ CurrentModule = RateTables
 
 # RateTables
 
-Documentation for [RateTables](https://github.com/lrnv/RateTables.jl). This package provides rate tables for person-year computations, alike [R's `ratetable` class](https://www.rdocumentation.org/packages/survival/versions/3.2-3/topics/ratetable). 
+Documentation for [RateTables](https://github.com/JuliaSurv/RateTables.jl). This package provides rate tables for person-year computations, alike [R's `ratetable` class](https://www.rdocumentation.org/packages/survival/versions/3.2-3/topics/ratetable). 
 
 You can install it through : 
 
