@@ -30,9 +30,9 @@ To obtain, for example, the daily hazard rate for a male, slovene, on its 20th b
 Then the right calling syntax is as follows: 
 
 ```@example 1
-a = 20*365.241 # The age needs to be given in days, and the converting factor is 365.241
-d = 2010*365.241 # the date also needs to be given in days, same converting factor. 
-s = :male # other covariates have diferent structures that depend on the rate table (usually sex is a Symbol with values :male and :female, other covariate might vary.)
+a = 20*365.241
+d = 2010*365.241
+s = :male
 v1 = daily_hazard(rt, a, d, s)
 v2 = daily_hazard(rt, a, d; sex=s)
 v3 = daily_hazard(rt[s], a, d)
