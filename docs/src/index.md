@@ -13,23 +13,26 @@ using Pkg
 Pkg.add("https://github.com/JuliaSurv/RateTables.jl")
 ```
 
-Then loading it through 
+Then loading this package provides a few constants rate tables objects. See the bottom of this page for the available rate tables. For the sake of the example, we'll use the `RT_HMD` dictionary, which stores contries rates tables extracted from the [Human Mortality Database (HMD)](https://mortality.org):
+
 ```@example 1
 using RateTables
-```
-
-provides a few constants rate tables objects. In particular:  a constant dictionary `RT_HMD` from which countries rate tables can be queried as follows:  
-```example 1
 rt = RT_HMD[:SVN] # SVN for slovenia.
 ```
 
 
-To obtain, for example, the daily hazard rate for a male, slovene, on its 20th birthday on the first of january 2010, you can call the `daily_hazard` function with several syntaxes: 
+To obtain, for example, the daily hazard rate for a male, slovene, on its 20th birthday on the first of january 2010, you can call the `daily_hazard` function. It needs to be called with the arguments in a specific format: 
+
+- The age needs to be given in days, and the converting factor is 1 year = 365.241 days.
+- The date also needs to be given in days, same converting factor. 
+- Other covariates formats depend on the rate table. Usually, there is a `sex` covariates with values `:male` and `:female`, sometimes `:total` too, but other covariates might have different format depending on the rate table.
+
+Then the right calling syntax is as follows: 
 
 ```@example 1
-a = 20*365.241
-d = 2010*365.241
-s = :male
+a = 20*365.241 # The age needs to be given in days, and the converting factor is 365.241
+d = 2010*365.241 # the date also needs to be given in days, same converting factor. 
+s = :male # other covariates have diferent structures that depend on the rate table (usually sex is a Symbol with values :male and :female, other covariate might vary.)
 v1 = daily_hazard(rt, a, d, s)
 v2 = daily_hazard(rt, a, d; sex=s)
 v3 = daily_hazard(rt[s], a, d)
@@ -55,6 +58,7 @@ v3 = daily_hazard(survexp_usr[s, r], a, d)
 (v1,v2,v3)
 ```
 
+Fetching these daily hazard is a very sensitive operation that should be as fast as possible since it is usually used in the middle of very-hot loops. Therefore, we take care of the performance of our fetching algorithms.
 
 Check out the index below for the list of availiable datasets. 
 
