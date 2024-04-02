@@ -22,8 +22,8 @@ Look at the docs [there](https://JuliaSurv.github.io/RateTables.jl/dev/) for the
 
 Todo : 
 
-- [ ] Add non-HMD rate tables from R packages, whith the same interface. 
-- [ ] life tables with covariates (country is already somewhat of a covariate..)
+- [x] Add non-HMD rate tables from R packages, whith the same interface. 
+- [x] Life tables with covariates (country is already somewhat of a covariate..)
 - [ ] better proofness to poor inputs (e.g. return missing ? return error?)
 - [ ] better docs
-- [ ] tests
+- [ ] better tests
