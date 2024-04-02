@@ -70,11 +70,11 @@ end
 
 
 """
-RateTable
+    `RateTable`
 
-This class deals with daily rate tables used in person-years computation. 
-For the moment it simply holds data from the HMD. 
+This class contains daily rate tables used in person-years computation. 
 
+Each of these tables contains the daily hazard rate for a matched subject from the population, defined as ``-\\log(1-qₓ)`` for ``qₓ`` the 1 year probability of death as reported in the original tables from the US Census. The tables are given in terms of hazard per day for computational convenience.
 """
 struct RateTable{N,Tmap} <: AbstractRateTable
     axes_names::NTuple{N,Symbol}
@@ -109,11 +109,23 @@ function Base.show(io::IO, rt::RateTable)
 end
 
 function Base.getindex(rt::RateTable{N,T},args...) where {N,T}
-    return rt.map[NamedTuple(rt.axes_names[i] => args[i] for i in 1:N)]
+    if length(args) == length(rt.axes_names)
+        return rt.map[NamedTuple(rt.axes_names[i] => args[i] for i in 1:N)]
+    else
+        # TODO : filter the map
+        @error "filtering the map is not implemented yet" 
+    end
 end
-
+function Base.getindex(rt::RateTable{N,T}; kwargs...) where {N,T}
+    if length(kwargs) == length(rt.axes_names)
+        return rt.map[NamedTuple(n => kwargs[n] for n in rt.axes_names)]
+    else
+        # TODO : filter the map
+        @error "filtering the map is not implemented yet" 
+    end
+end
 function daily_hazard(rt::RateTable,age_daily, date_daily; kwargs...)
-    return daily_hazard(rt.map[NamedTuple(kwargs)], age_daily,date_daily)
+    return daily_hazard(rt.map[NamedTuple(n => kwargs[n] for n in rt.axes_names)], age_daily,date_daily)
 end
 function daily_hazard(rt::RateTable{N,T},age_daily, date_daily, args...) where {N,T}
     return daily_hazard(rt.map[NamedTuple(rt.axes_names[i] => args[i] for i in 1:N)], age_daily,date_daily)
