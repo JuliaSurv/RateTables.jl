@@ -2,4 +2,5 @@
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 HMD = "efbec085-ac95-4f2a-8975-c3bbdc78481e"
+RCall = "6f49c342-dc21-5d91-9882-a32aef131414"
 ZipFile = "a5390f91-8eb1-5f08-bee0-b1d1ffed6cea"

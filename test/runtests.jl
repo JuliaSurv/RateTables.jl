@@ -9,20 +9,42 @@ using RData
     end
     # Write your tests here.
 
+    @testset "R rate tables" begin
 
-    @testset "slopop" begin
-        slopop = RT_HMD[:SVN] # slovenia's ratetable
-        # daily hazard for a female (code 1)
-        # aged 12 in 1979 (at begining of study)
-        # after 37 days of study.
-        daily_hazard(slopop, 12*365.241 + 37, 1989*365.241 + 37, 1)
+        for rt in (slopop, survexp_us, survexp_mn, survexp_fr)
+            a = 20*365.241 + 365*rand()
+            d = 2010*365.241 + 365*rand()
+            s = rand() >0.5 ? :male : :female
+            v1 = daily_hazard(rt, a, d, s)
+            v2 = daily_hazard(rt, a, d; sex=s)
+            v3 = daily_hazard(rt[s], a, d)
+            @test v1 == v2
+            @test v2 == v3
+        end
+        
+        a = 20*365.241 + 365*rand()
+        d = 2010*365.241 + 365*rand()
+        s = rand() >0.5 ? :male : :female
+        r = rand() > 0.5 ? :white : :black
+        v1 = daily_hazard(survexp_usr, a, d, s, r)
+        v2 = daily_hazard(survexp_usr, a, d; sex=s, race=r)
+        v3 = daily_hazard(survexp_usr[s,r], a, d)
+        @test v1 == v2
+        @test v2 == v3
     end
 
-    # issue: this rate table from R has not the same sources as the HMD ones... 
-    # So we need to do something else for ratetables used in person-year work in R... 
-    r_slopop = load(joinpath(@__DIR__,"slopop.rda"))["slopop"]
-    
-
+    @testset "HMD ratetables" begin
+        for (key,rt) in pairs(RT_HMD)
+            a = 20*365.241 + 365*rand()
+            d = 2010*365.241 + 365*rand()
+            s = rand() >0.5 ? :male : :female
+            v1 = daily_hazard(rt, a, d, s)
+            v2 = daily_hazard(rt, a, d; sex=s)
+            v3 = daily_hazard(rt[s], a, d)
+            @test v1 == v2
+            @test v2 == v3
+        end
+    end
 end
 
 
