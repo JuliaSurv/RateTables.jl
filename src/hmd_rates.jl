@@ -1,16 +1,11 @@
 """
     `hmd_rates`
 
-RateTable providing daily hazard rates for both sexes for several countries. They are derived from annual death probabilities (qₓ's) from the Human Mortality Database at https://www.mortality.org/
+RateTable providing daily hazard rates for both sexes for several countries. They are derived from annual death probabilities (qₓ's) from the [Human Mortality Database](https://www.mortality.org/)
 
-Segmented by `country ∈ ...` and `sex ∈ (:male, :female, :total)`. 
+Segmented by `country ∈ keys(hmd_countries)` and `sex ∈ (:male, :female, :total)`. 
 
-
-Dayly hazard for a slovenian male, born on the 1rst of january 1927, 192 days after his 37th birthday can for example be obtained as follows:
-
-`daily_hazard(hmd_rates[:svn, :male], 37*RT_DAYS_IN_YEAR + 192, 1927*RT_DAYS_IN_YEAR + 192, 1)`
-
-The list of countries codes is given with details in the hmd_countries constant. 
+The list of countries codes is given with details in the `hmd_countries` constant. 
 """
 const hmd_rates = let
 
@@ -56,7 +51,7 @@ end
 """
     `hmd_countries`
 
-Gives details about the countries codes used in the `hmd_rates` dataset. 
+Gives a list of countries codes used in the `hmd_rates` dataset. 
 """
 const hmd_countries = let 
     dfs = Dict{Symbol, String}()

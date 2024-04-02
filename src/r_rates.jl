@@ -3,7 +3,7 @@
 
     `slopop`
 
-Slovene census data. Correspond to R's package `relsurv` `slopop` ratetable. Segmented by `sex ∈ (:male, :female)`.
+Slovene census data. Correspond to R's `relsurv::slopop` ratetable from the `relsurv` package. Segmented by `sex ∈ (:male, :female)`.
 """
 slopop
 const slopop = let 

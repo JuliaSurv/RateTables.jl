@@ -4,29 +4,44 @@ CurrentModule = RateTables
 
 # RateTables
 
-Documentation for [RateTables](https://github.com/JuliaSurv/RateTables.jl). This package provides rate tables for person-year computations, alike [R's `ratetable` class](https://www.rdocumentation.org/packages/survival/versions/3.2-3/topics/ratetable). 
+The [RateTables.jl](https://github.com/JuliaSurv/RateTables.jl) Julia package provides daily rate table objects from census datasets targeted at person-year computations, alike [R's `ratetable` class](https://www.rdocumentation.org/packages/survival/versions/3.2-3/topics/ratetable). 
 
-You can install it through : 
+You can install it through: 
 
 ```julia
 using Pkg
 Pkg.add("https://github.com/JuliaSurv/RateTables.jl")
 ```
 
-Then loading this package provides a few constants rate tables objects. See the bottom of this page for the available rate tables. For the sake of the example, we'll use the `hmd_rates` dictionary, which stores rates tables extracted from the [Human Mortality Database (HMD)](https://mortality.org).
+Loading this package exports a few constant `RateTable` objects. See the bottom of this page for the available rate tables. For the sake of the example, we'll use the `hmd_rates` dictionary, which stores rates tables extracted from the [Human Mortality Database (HMD)](https://mortality.org).
 
 ```@example 1
 using RateTables
 hmd_rates
 ```
 
-To obtain, for example, the daily hazard rate for a male, slovene, on its 20th birthday on the first of january 2010, you can call the `daily_hazard` function. It needs to be called with the arguments in a specific format: 
+The output of the REPL show that we have a `RateTable` object with two covariates `:country` and `:sex`. You can query the availiable covariates of a given RateTable: 
 
-- The age needs to be given in days, and the converting factor is 1 year = 365.241 days.
-- The date also needs to be given in days, same converting factor. 
-- Other covariates formats depend on the rate table. Usually, there is a `sex` covariates with values `:male` and `:female`, sometimes `:total` too, but other covariates might have different format depending on the rate table. In particular, the country is a covariate in this particular ratetable. 
+```@example 1
+availlable_covariates(hmd_rates, :sex)
+```
 
-For `hmd_rates`, there are two additional covariates: country and sex, in this order. Depending on the querying syntax, the order of the passed argument might matter: 
+For this specific dataset, the number of countries is huge and calling `availlable_covariates(hmd_rates, :country)` wont be very usefull. For convenience, we provided details on the country codes separately in an other constant object `hmd_countries`:
+
+```@example 1
+hmd_countries
+```
+
+Recall that a daily hazard rate of mortality is defined as $-\log(1 - q_x)/365.241$ for an annual death rate $q_x$. This is an alternative form of presenting mortality tables that is particularly convenient for person-year computations. To obtain daily rates from the tables, you have to use the `daily_hazard` function. It needs to be called with arguments in a specific format: 
+
+- The `age` needs to be given in days, and the converting factor is 1 year = 365.241 days.
+- The `date` also needs to be given in days, same converting factor. 
+- Other covariates formats vary from rate tables to rate tables, but their order matters.
+
+Usually, the `sex` covariates has values `:male`, `:female`, sometimes `:total`. For `hmd_rates`, we already saw that there was two additional covariates: `country` and `sex`. 
+
+Depending on the querying syntax, the order of the passed argument can matter. For example, the daily hazard rate for a slovene male, on its 20th birthday the first of january 2010 can be queried with one of the following syntaxes:  
+
 ```@example 1
 c = :svn # slovenia. 
 a = 20*365.241
@@ -39,28 +54,27 @@ v4 = daily_hazard(hmd_rates[c, s], a, d) # here the order of arguments (c,s) als
 (v1,v2,v3, v4)
 ```
 
-Note that there is a discrepency between HMD datasets and datasets from other places. For completeness, this package also include datasets commonly used in R for census datas, in particular the `relsurv::slopop` dataset for slovenia : 
+For completeness, this package also include datasets commonly used in R for census datas, in particular the `relsurv::slopop` dataset for slovenia: 
 
 ```@example 1
-v1 = daily_hazard(slopop, a, d, s)
-v2 = daily_hazard(slopop, a, d; sex=s)
-v3 = daily_hazard(slopop[s], a, d)
-(v1,v2,v3)
+daily_hazard(slopop, a, d; sex=s)
 ```
 
+Note the discrepency with HMD data. 
 
-Sometimes there is more covariates in the datasets than only the sex. Ths is for example the case for the `survival::survexp.usr` dataset that includes the race. In this case, the calling structure is very similar: 
+Another example with additional covariates is the `survival::survexp.usr` dataset that includes a race covariate from us census data. In this case, the calling structure is very similar: 
 ```@example 1
 r = :white
 v1 = daily_hazard(survexp_usr, a, d, s, r)
 v2 = daily_hazard(survexp_usr, a, d; sex=s, race=r)
-v3 = daily_hazard(survexp_usr[s, r], a, d)
-(v1,v2,v3)
+v3 = daily_hazard(survexp_usr, a, d; race=r, sex=s)
+v4 = daily_hazard(survexp_usr[s, r], a, d)
+(v1,v2,v3,v4)
 ```
 
-Fetching these daily hazard is a very sensitive operation that should be as fast as possible since it is usually used in the middle of very-hot loops. Therefore, we take care of the performance of our fetching algorithms.
+Note that fetching these daily hazard is a very sensitive operation that should be as fast as possible since it is usually used in the middle of very-hot loops. Therefore, we take care of the performance of our fetching algorithms.
 
-Check out the folliwng index for a list of availiable ratetables:
+Check out the following index for a list of availiable ratetables:
 
 ```@index
 ```

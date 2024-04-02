@@ -100,12 +100,7 @@ function RateTable(df)
 end
 function Base.show(io::IO, rt::RateTable)
     compact = get(io, :compact, false)
-    if compact 
-        print(io, "RT$(rt.axes_names)")
-    else
-        ex = rt.map[first(keys(rt.map))]
-        print(io, "RT$(rt.axes_names) with elements BRT($(ex.extrema_age[1])..$(ex.extrema_age[2]) × $(ex.extrema_year[1])..$(ex.extrema_year[2])).")
-    end
+    print(io, "RateTable$(rt.axes_names)")
 end
 
 function Base.getindex(rt::RateTable{N,T},args...) where {N,T}
@@ -129,4 +124,8 @@ function daily_hazard(rt::RateTable,age_daily, date_daily; kwargs...)
 end
 function daily_hazard(rt::RateTable{N,T},age_daily, date_daily, args...) where {N,T}
     return daily_hazard(rt.map[NamedTuple(rt.axes_names[i] => args[i] for i in 1:N)], age_daily,date_daily)
+end
+
+function availlable_covariates(rt::RateTable, axe)
+    unique(k[axe] for k in keys(rt.map))
 end
