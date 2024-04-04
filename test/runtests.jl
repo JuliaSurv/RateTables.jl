@@ -11,7 +11,7 @@ using RData
 
     @testset "R rate tables" begin
 
-        for rt in (slopop, survexp_us, survexp_mn, survexp_fr)
+        for rt in (slopop, survexp_us, survexp_mn, survexp_fr, frpop)
             a = 20*365.241 + 365*rand()
             d = 2010*365.241 + 365*rand()
             s = rand() >0.5 ? :male : :female

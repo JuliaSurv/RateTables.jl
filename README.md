@@ -24,6 +24,6 @@ Todo :
 
 - [x] Add non-HMD rate tables from R packages, whith the same interface. 
 - [x] Life tables with covariates (country is already somewhat of a covariate..)
-- [ ] better proofness to poor inputs (e.g. return missing ? return error?)
+- [ ] better proofness to poor inputs (e.g. return missings ? return errors?)
 - [ ] better docs
 - [ ] better tests

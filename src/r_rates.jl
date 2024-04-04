@@ -65,3 +65,18 @@ const survexp_fr = let
     df.sex = Symbol.(df.sex)
     RateTable(df)
 end
+
+
+"""
+
+    `frpop`
+
+French census datas, source unknonw ? 
+
+Segmented by `sex ∈ (:male, :female)`
+"""
+const frpop = let 
+    df = CSV.read(joinpath(@__DIR__,"..","data","R_data","frpop.csv"), DataFrames.DataFrame)
+    df.sex = Symbol.(df.sex)
+    RateTable(df)
+end

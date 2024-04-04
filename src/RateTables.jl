@@ -9,6 +9,6 @@ include("RateTable.jl")
 include("hmd_rates.jl")
 include("r_rates.jl")
 
-export hmd_rates, hmd_countries, slopop, survexp_us, survexp_usr, survexp_mn, survexp_fr, daily_hazard, availlable_covariates
+export hmd_rates, hmd_countries, slopop, survexp_us, survexp_usr, survexp_mn, survexp_fr, daily_hazard, availlable_covariates, frpop
 
 end

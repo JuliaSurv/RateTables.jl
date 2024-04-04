@@ -72,3 +72,8 @@ rename!(df, :Var1 => :age, :Var2 => :sex, :Var3 => :year)
 df = massage(df)
 path = joinpath(@__DIR__, "R_data", "survexp_fr.survexp_fr.csv")
 CSV.write(path, df)
+
+
+######################################## frpop
+df = massage(rcopy(R"source('data/frpop.r'); extract(frpop)"))
+CSV.write(joinpath(@__DIR__, "R_data", "frpop.csv"),df)
