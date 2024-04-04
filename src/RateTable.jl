@@ -19,6 +19,7 @@ struct BasicRateTable <: AbstractRateTable
         return new(values, extrema(ages), extrema(years))
     end
 end
+predictors(::BasicRateTable) = () # empty tuple. 
 function BasicRateTable(df)
     @assert ncol(df)==3
     @assert "age" ∈ names(df)
@@ -83,6 +84,7 @@ struct RateTable{N,Tmap} <: AbstractRateTable
         return new{length(axes_names),typeof(mapping)}(axes_names, mapping)
     end
 end
+predictors(rt::RateTable) = rt.axes_names
 function RateTable(df)
     axes_names = Symbol.(names(select(df,Not([:age, :year, :value]))))
     sort!(df, axes_names) # sorting. 
