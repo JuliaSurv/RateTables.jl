@@ -110,7 +110,7 @@ dty(t,minval,maxval) = min(Int(trunc(t*RT_YEARS_IN_DAY))-minval+1,maxval-minval+
 This function queries daily hazard values from a given BasicRateTable.
 The parameters `age` and `date` have to be in days (1 year = $(RT_DAYS_IN_YEAR) days).
 """
-daily_hazard(rt::BasicRateTable,a, d) = return rt.values[dty(a,rt.extrema_age...),dty(d,rt.extrema_year...)]
-daily_hazard(rt::RateTable, a, d; kwargs...) = daily_hazard(getindex(rt; kwargs...), a, d)
-daily_hazard(rt::RateTable, a, d, args...)   = daily_hazard(getindex(rt, args...),   a, d)
+@inline daily_hazard(rt::BasicRateTable,a, d) = rt.values[dty(a,rt.extrema_age...),dty(d,rt.extrema_year...)]
+@inline daily_hazard(rt::RateTable, a, d; kwargs...) = daily_hazard(getindex(rt; kwargs...), a, d)
+@inline daily_hazard(rt::RateTable, a, d, args...)   = daily_hazard(getindex(rt, args...),   a, d)
 
