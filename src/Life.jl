@@ -24,7 +24,6 @@ struct Life<:ContinuousUnivariateDistribution
         return new(∂t,λ)
     end
 end
-
 function expectation(L::Life)
     S = 1.0
     E = 0.0
