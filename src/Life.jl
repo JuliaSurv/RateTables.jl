@@ -1,5 +1,5 @@
 
-struct Life<:ContinuousUnivariateDistribution
+struct Life<:Distributions.ContinuousUnivariateDistribution
     ∂t::Vector{Float64}
     λ::Vector{Float64}
     function Life(brt::BasicRateTable,a,d)
@@ -24,7 +24,8 @@ struct Life<:ContinuousUnivariateDistribution
         return new(∂t,λ)
     end
 end
-function expectation(L::Life)
+Distributions.@distr_support Life 0.0 Inf
+function Distributions.expectation(L::Life)
     S = 1.0
     E = 0.0
     for j in eachindex(L.∂t)
@@ -50,6 +51,21 @@ function cumhazard(L::Life, t)
             return Λ
         end
     end
-    return Λ
+    return Λ + (t-u) # to avoid issues. 
 end
-ccdf(L::Life, t::T) where T<:Real = exp(-cumhazard(L::Life,t))
+Distributions.ccdf(L::Life, t) = exp(-cumhazard(L::Life,t))
+Distributions.cdf(L::Life, t) = 1 - ccdf(L,t)
+function Distributions.quantile(L::Life, p)
+    Λ_target = -log(1-p)
+    Λ = 0.0
+    u = 0.0
+    for j in eachindex(L.∂t)
+        Λ += L.λ[j]*L.∂t[j]
+        u += L.∂t[j]
+        if Λ_target < Λ
+            u -= (Λ - Λ_target) / L.λ[j]
+            return u
+        end
+    end
+    return u
+end

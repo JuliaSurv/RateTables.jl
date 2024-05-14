@@ -2,8 +2,8 @@ module RateTables
 
 import CSV
 using DataFrames
-using Distributions
-import Distributions: ccdf, expectation
+using Distributions: @distr_support, cdf, ccdf, expectation, quantile, AbstractRNG, ContinuousUnivariateDistribution
+import Distributions: ccdf, cdf, expectation
 using Base.Cartesian
 
 const RT_DAYS_IN_YEAR = 365.241
