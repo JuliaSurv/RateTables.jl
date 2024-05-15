@@ -21,6 +21,13 @@ struct Life<:Distributions.ContinuousUnivariateDistribution
             push!(∂t, RT_DAYS_IN_YEAR - ∂t[2], ∂t[2])
             push!(λ, brt.values[i,j], brt.values[k,l])
         end
+        if (l >= size(brt.values,2)) # exit on the right => still young ! 
+            # A good approximation is to go through the last column. 
+            for m in (k+1):size(brt.values,1)
+                push!(∂t, RT_DAYS_IN_YEAR)
+                push!(λ, brt.values[m,end])
+            end
+        end
         return new(∂t,λ)
     end
 end
@@ -37,9 +44,10 @@ function Distributions.expectation(L::Life)
             E += S * L.∂t[j]
         end
     end
-    return E
+    R = S / L.λ[end] # Reminder, assuming an exponential continuation on the last rate (whcih is pretty wrong for young peoples... very weird.)
+    return E + R
 end
-function cumhazard(L::Life, t)
+function cumhazard(L::Life, t::Real)
     Λ = 0.0
     u = 0.0
     for j in eachindex(L.∂t)
@@ -51,11 +59,11 @@ function cumhazard(L::Life, t)
             return Λ
         end
     end
-    return Λ + (t-u) # to avoid issues. 
+    return Λ + (t-u)*L.λ[end] # We consider that the last box is in fact infinitely wide (exponential tail)
 end
-Distributions.ccdf(L::Life, t) = exp(-cumhazard(L::Life,t))
-Distributions.cdf(L::Life, t) = 1 - ccdf(L,t)
-function Distributions.quantile(L::Life, p)
+Distributions.ccdf(L::Life, t::Real) = exp(-cumhazard(L::Life,t))
+Distributions.cdf(L::Life, t::Real) = 1 - ccdf(L,t)
+function Distributions.quantile(L::Life, p::Real)
     Λ_target = -log(1-p)
     Λ = 0.0
     u = 0.0
