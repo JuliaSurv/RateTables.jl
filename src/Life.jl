@@ -44,7 +44,7 @@ function Distributions.expectation(L::Life)
             E += S * L.∂t[j]
         end
     end
-    R = S / L.λ[end] # Reminder, assuming an exponential continuation on the last rate (whcih is pretty wrong for young peoples... very weird.)
+    R = S / L.λ[end] # This reminder assumes a exponential life time afer the maximuum age.
     return E + R
 end
 function cumhazard(L::Life, t::Real)
@@ -59,7 +59,8 @@ function cumhazard(L::Life, t::Real)
             return Λ
         end
     end
-    return Λ + (t-u)*L.λ[end] # We consider that the last box is in fact infinitely wide (exponential tail)
+    # We consider that the last box is in fact infinitely wide (exponential tail)
+    return Λ + (t-u)*L.λ[end] 
 end
 Distributions.ccdf(L::Life, t::Real) = exp(-cumhazard(L::Life,t))
 Distributions.cdf(L::Life, t::Real) = 1 - ccdf(L,t)
