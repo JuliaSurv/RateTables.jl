@@ -10,20 +10,17 @@
 [![Aqua](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 
 
-This package provides rate tables for person-year computations, alike [R's `ratetable` class](https://www.rdocumentation.org/packages/survival/versions/3.2-3/topics/ratetable). 
-
-Since it is not registered yet, you can install the package from github with: 
+This package provides rate tables for person-year computations, alike [R's `ratetable` class](https://www.rdocumentation.org/packages/survival/versions/3.2-3/topics/ratetable). It provides easy and performant querying syntax for daily hazard rates, alongside methods to extract the `Life` random variable, whcih gives access to random life generations, expectations, etc. As it is registered in the general registry, you may simply install it via 
 ```julia
-using Pkg
-Pkg.add("https://github.com/JuliaSurv/RateTables.jl")
+] add RateTables
 ```
 
-Look at the docs [there](https://JuliaSurv.github.io/RateTables.jl/dev/) for the list of available daily rate tables and the syntax to query from them.
-
+Look at the docs [there](https://JuliaSurv.github.io/RateTables.jl/dev/) for the list of available daily rate tables, and the proposed API. 
 Todo : 
 
 - [x] Add non-HMD rate tables from R packages, whith the same interface. 
 - [x] Life tables with covariates (country is already somewhat of a covariate..)
+- [x] Life random variables
 - [ ] better proofness to poor inputs (e.g. return missings ? return errors?)
 - [ ] better docs
 - [ ] better tests
