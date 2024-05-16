@@ -63,7 +63,7 @@ function cumhazard(L::Life, t::Real)
     return Λ + (t-u)*L.λ[end] 
 end
 Distributions.ccdf(L::Life, t::Real) = exp(-cumhazard(L::Life,t))
-Distributions.cdf(L::Life, t::Real) = 1 - ccdf(L,t)
+Distributions.cdf(L::Life, t::Real) = -expm1(-cumhazard(L::Life,t)) # more precise.
 function Distributions.quantile(L::Life, p::Real)
     Λ_target = -log(1-p)
     Λ = 0.0

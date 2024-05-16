@@ -2,7 +2,7 @@ module RateTables
 
 import CSV
 using DataFrames
-using Distributions: @distr_support, cdf, ccdf, expectation, quantile, AbstractRNG, ContinuousUnivariateDistribution
+using Distributions
 import Distributions: ccdf, cdf, expectation
 using Base.Cartesian
 
