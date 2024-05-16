@@ -20,6 +20,12 @@ using RData
             v3 = daily_hazard(rt[s], a, d)
             @test v1 == v2
             @test v2 == v3
+
+            # check life:
+            L = Life(rt[s], a, d)
+            e, r = expectation(L), rand(L, 10)
+            @test all(a .+ r .<= 120*365.241) # noone lives too long. 
+            @test e+a <= 120*365.241
         end
         
         a = 20*365.241 + 365*rand()
@@ -33,6 +39,12 @@ using RData
         @test v1 == v2
         @test v2 == v3
         @test v4 == v3
+
+        # check life:
+        L = Life(survexp_usr[s,r], a, d)
+        e, r = expectation(L), rand(L, 10)
+        @test all(a .+ r .<= 120*365.241) # noone lives too long. 
+        @test e+a <= 120*365.241
     end
 
     @testset "HMD ratetables" begin
@@ -47,6 +59,12 @@ using RData
             @test v1 == v2
             @test v2 == v3
             @test v4 == v3
+
+            # check life:
+            L = Life(hmd_rates[c,s],a,d)
+            e, r = expectation(L), rand(L, 10)
+            @test all(a .+ r .<= 120*365.241) # noone lives too long. 
+            @test e+a <= 120*365.241
         end
     end
 end
