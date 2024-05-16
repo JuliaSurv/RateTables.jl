@@ -1,4 +1,10 @@
+"""
+    Life
 
+This function returns parameters that are used as random variables in survival, expectation, random number generation, etc...
+
+This works by checking if the individual is closer to the oldest age than the last year in the ratetable, calculating at each step the time difference and the hazard values. For the younger individuals, we assume they go through the last column at the end no matter what age they are. 
+"""
 struct Life<:Distributions.ContinuousUnivariateDistribution
     ∂t::Vector{Float64}
     λ::Vector{Float64}
@@ -44,9 +50,14 @@ function Distributions.expectation(L::Life)
             E += S * L.∂t[j]
         end
     end
-    R = S / L.λ[end] # This reminder assumes a exponential life time afer the maximuum age.
+    R = S / L.λ[end] # This reminder assumes a exponential life time afer the maximum age.
     return E + R
 end
+"""
+    cumhazard
+
+Assuming the last box is infinitely wide, we calculate the cumulative hazard from ∂t and λ taken from the `Life` function.
+"""
 function cumhazard(L::Life, t::Real)
     Λ = 0.0
     u = 0.0

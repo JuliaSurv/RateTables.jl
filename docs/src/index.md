@@ -76,6 +76,30 @@ Note that fetching these daily hazard is a very sensitive operation that should 
 
 Check out the following index for a list of availiable ratetables:
 
+## Life function
+
+The `Life` function is used to extract individual life profiles from a comprehensive ratetable, by using covariates such as age, gender, and health status or others. Once these life profiles are established, they serve as foundational elements for various analytical practices such as survival probability estimations, expected lifespan calculations, and simulations involving random variables related to life expectancy. 
+
+When applying it to a male individual aged $20$ in $1990$, we get the outcome below: 
+
+```@example 1
+L = Life(slopop[:male], 7000, 1990*365.241)
+```
+
+With these results, the approximated lifespan left is thus calculated using: 
+
+$$ \mathbf{E}(P) = \int_0^\inf S_p (t) dt = \sum_{j=0}^\inf \frac{S_p(t_j)}{\lambda_p(t_j)(1 - exp(-\lambda_p(t_j)(t_{j+1}-t_j)))} $$
+
+Simplified by the function `expectation`:
+
+```@example 1
+expectation(L)/365.241
+```
+
+We get $57.7$ years left, meaning the life expectancy is around $77$ years old for the given individual.
+
+## Package contents
+
 ```@index
 ```
 
