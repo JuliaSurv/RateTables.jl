@@ -15,21 +15,26 @@ struct Life<:Distributions.ContinuousUnivariateDistribution
         rem_d = RT_DAYS_IN_YEAR - rem(d, RT_DAYS_IN_YEAR)
     
         # Do we go right or below first ? 
-        # happy birthday (below) or happy new year (right) first ?
+        # Happy birthday (below) or Happy new year (right) first ?
         k,l = rem_a < rem_d ? (i+1,j) : (i,j+1)
+
+        # Cap obtained values to avoid going out of bounds: 
+        K,L = size(brt.values)
+        k = min(k, K)
+        l = min(l, L)
     
         # lengths and hazards in the first two cells:  
         ∂t = [min(rem_a,rem_d), abs(rem_a - rem_d)]
         λ  = [brt.values[i,j],  brt.values[k,l]]
     
-        while (k < size(brt.values,1)) && (l < size(brt.values,2))
+        while (k < K) && (l < L)
             i,j,k,l = i+1, j+1, k+1, l+1
             push!(∂t, RT_DAYS_IN_YEAR - ∂t[2], ∂t[2])
             push!(λ, brt.values[i,j], brt.values[k,l])
         end
-        if (l >= size(brt.values,2)) # exit on the right => still young ! 
+        if (l >= L) # exit on the right => still young ! 
             # A good approximation is to go through the last column. 
-            for m in (k+1):size(brt.values,1)
+            for m in (k+1):K
                 push!(∂t, RT_DAYS_IN_YEAR)
                 push!(λ, brt.values[m,end])
             end
@@ -50,7 +55,8 @@ function Distributions.expectation(L::Life)
             E += S * L.∂t[j]
         end
     end
-    R = S / L.λ[end] # This reminder assumes a exponential life time afer the maximum age.
+    # This reminder assumes a exponential life time afer the maximum age.
+    R = ifelse(L.λ[end] == 0.0, 0.0, S / L.λ[end])
     return E + R
 end
 """
