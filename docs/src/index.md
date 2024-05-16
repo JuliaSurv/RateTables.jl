@@ -76,9 +76,9 @@ Note that fetching these daily hazard is a very sensitive operation that should 
 
 Check out the following index for a list of availiable ratetables:
 
-## Life function
+## Life random variables
 
-The `Life` function is used to extract individual life profiles from a comprehensive ratetable, by using covariates such as age, gender, and health status or others. Once these life profiles are established, they serve as foundational elements for various analytical practices such as survival probability estimations, expected lifespan calculations, and simulations involving random variables related to life expectancy. 
+The `Life` function is used to extract individual life profiles (as random variables complient with `Distributions.jl`'s API) from a comprehensive ratetable, by using covariates such as age, gender, and health status or others. Once these life profiles are established, they serve as foundational elements for various analytical practices such as survival probability estimations, expected lifespan calculations, and simulations involving random variables related to life expectancy. 
 
 When applying it to a male individual aged $20$ in $1990$, we get the outcome below: 
 
@@ -86,17 +86,19 @@ When applying it to a male individual aged $20$ in $1990$, we get the outcome be
 L = Life(slopop[:male], 7000, 1990*365.241)
 ```
 
-With these results, the approximated lifespan left is thus calculated using: 
+Due to the constance of the hazard rates on each cell of the lifetable, the life expectation can be computed through the following formula: 
 
 $$ \mathbf{E}(P) = \int_0^\inf S_p (t) dt = \sum_{j=0}^\inf \frac{S_p(t_j)}{\lambda_p(t_j)(1 - exp(-\lambda_p(t_j)(t_{j+1}-t_j)))} $$
 
-Simplified by the function `expectation`:
+Implemented in the function `Distributions.expectation`:
 
 ```@example 1
 expectation(L)/365.241
 ```
 
-We get $57.7$ years left, meaning the life expectancy is around $77$ years old for the given individual.
+We get $57.7$ years left, implying a total life expectancy of about $77$ years for the given individual.
+
+These random variables comply with the [`Distributions.jl`](https://github.com/JuliaStats/Distributions.jl)'s API.
 
 ## Package contents
 
