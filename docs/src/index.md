@@ -77,6 +77,32 @@ Please note that retrieving these daily hazards is a highly sensitive operation 
 
 For a list of the available rate tables, kindly refer to the following index:
 
+## Life random variables
+
+The `Life` function is used to extract individual life profiles (as random variables complient with `Distributions.jl`'s API) from a comprehensive ratetable, by using covariates such as age, gender, and health status or others. Once these life profiles are established, they serve as foundational elements for various analytical practices such as survival probability estimations, expected lifespan calculations, and simulations involving random variables related to life expectancy. 
+
+When applying it to a male individual aged $20$ in $1990$, we get the outcome below: 
+
+```@example 1
+L = Life(slopop[:male], 7000, 1990*365.241)
+```
+
+Due to the constance of the hazard rates on each cell of the lifetable, the life expectation can be computed through the following formula: 
+
+$$ \mathbf{E}(P) = \int_0^\inf S_p (t) dt = \sum_{j=0}^\inf \frac{S_p(t_j)}{\lambda_p(t_j)(1 - exp(-\lambda_p(t_j)(t_{j+1}-t_j)))} $$
+
+Implemented in the function `Distributions.expectation`:
+
+```@example 1
+expectation(L)/365.241
+```
+
+We get $57.7$ years left, implying a total life expectancy of about $77$ years for the given individual.
+
+These random variables comply with the [`Distributions.jl`](https://github.com/JuliaStats/Distributions.jl)'s API.
+
+## Package contents
+
 ```@index
 ```
 

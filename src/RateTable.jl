@@ -114,3 +114,4 @@ The parameters `age` and `date` have to be in days (1 year = $(RT_DAYS_IN_YEAR) 
 @inline daily_hazard(rt::RateTable, a, d; kwargs...) = daily_hazard(getindex(rt; kwargs...), a, d)
 @inline daily_hazard(rt::RateTable, a, d, args...)   = daily_hazard(getindex(rt, args...),   a, d)
 
+
