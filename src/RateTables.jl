@@ -26,7 +26,6 @@ export hmd_rates,
        frpop,
        Life,
        expectation,
-       cumhazard,
        ccdf
 
 end
