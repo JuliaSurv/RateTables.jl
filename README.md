@@ -10,7 +10,7 @@
 [![Aqua](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 
 
-This package provides rate tables for person-year computations, alike [R's `ratetable` class](https://www.rdocumentation.org/packages/survival/versions/3.2-3/topics/ratetable). It provides easy and performant querying syntax for daily hazard rates, alongside methods to extract the `Life` random variable, whcih gives access to random life generations, expectations, etc. As it is registered in the general registry, you may simply install it via 
+The `RateTables.jl` package is part of the JuliaSurv survival analysis suite. It provides rate tables for person-year computations, alike [R's `ratetable` class](https://www.rdocumentation.org/packages/survival/versions/3.2-3/topics/ratetable). It provides easy and performant querying syntax for daily hazard rates, alongside methods to extract the `Life` random variable, whcih gives access to random life generations, expectations, etc. As it is registered in the general registry, you may simply install it via 
 ```julia
 ] add RateTables
 ```
