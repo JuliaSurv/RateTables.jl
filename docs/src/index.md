@@ -89,7 +89,7 @@ L = Life(slopop[:male], 7000, 1990*365.241)
 
 Due to the constance of the hazard rates on each cell of the lifetable, the life expectation can be computed through the following formula: 
 
-$$ \mathbf{E}(P) = \int_0^\inf S_p (t) dt = \sum_{j=0}^\inf \frac{S_p(t_j)}{\lambda_p(t_j)(1 - exp(-\lambda_p(t_j)(t_{j+1}-t_j)))} $$
+$$\mathbf{E}(P) = \int_0^\inf S_p (t) dt = \sum_{j=0}^\inf \frac{S_p(t_j)}{\lambda_p(t_j)(1 - exp(-\lambda_p(t_j)(t_{j+1}-t_j)))}$$
 
 Implemented in the function `Distributions.expectation`:
 
