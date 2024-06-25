@@ -14,7 +14,7 @@ struct BasicRateTable <: AbstractRateTable
 end
 
 """
-    `RateTable`
+    RateTable
 
 This class contains daily rate tables used in person-years computation. 
 
@@ -105,10 +105,13 @@ Base.getindex(rt::RateTable; kwargs...) = getindex(rt, collect(kwargs[n] for n i
 dty(t,minval,maxval) = min(Int(trunc(t*RT_YEARS_IN_DAY))-minval+1,maxval-minval+1)
 
 """
-    `daily_hazard(rt::BasicRateTable,age,date)`
+    daily_hazard(rt::BasicRateTable, age, date)
+    daily_hazard(rt::RateTable,      age, date, args...)
+    daily_hazard(rt::RateTable,      age, date; kwargs...)
 
 This function queries daily hazard values from a given BasicRateTable.
 The parameters `age` and `date` have to be in days (1 year = $(RT_DAYS_IN_YEAR) days).
+Potential args and kwargs will be used to subset the ratetable.
 """
 @inline daily_hazard(rt::BasicRateTable,a, d) = rt.values[dty(a,rt.extrema_age...),dty(d,rt.extrema_year...)]
 @inline daily_hazard(rt::RateTable, a, d; kwargs...) = daily_hazard(getindex(rt; kwargs...), a, d)
