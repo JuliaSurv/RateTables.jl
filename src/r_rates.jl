@@ -1,7 +1,7 @@
 
 """
 
-    `slopop`
+    slopop
 
 Slovene census data. Correspond to R's `relsurv::slopop` ratetable from the `relsurv` package. Segmented by `sex ∈ (:male, :female)`.
 """
@@ -14,7 +14,7 @@ end
 
 """
 
-    `survexp_us`
+    survexp_us
 
 Census data set for the US population, drawn from R's package `survival`. RateTable `survexp_us` gives total United States population, by age and sex, 1940 to 2012. Segmented by `sex ∈ (:male, :female)`
 """
@@ -26,7 +26,7 @@ end
 
 """
 
-    `survexp_usr`
+    survexp_usr
 
 Census data set for the US population, drawn from R's package `survival`. RateTable `survexp_usr` gives the United States population, by age, sex and race, 1940 to 2014. Race is white or black. For 1960 and 1970 the black population values were not reported separately, so the nonwhite values were used. (Over the years, the reported tables have differed wrt reporting non-white and/or black.). Segmented by `sex ∈ (:male, :female)` and `race `∈ (:white, :black)`. 
 """
@@ -39,7 +39,7 @@ end
 
 """
 
-    `survexp_mn`
+    survexp_mn
 
 Census data set for the US population, drawn from R's package `survival`. RateTable `survexp_mn` gives total Minnesota population, by age and sex, 1970 to 2013. Segmented by `sex ∈ (:male, :female)`
 """
@@ -52,7 +52,7 @@ end
 
 """
 
-    `survexp_fr`
+    survexp_fr
 
 French census datas, drawn from R's package `survexp.fr`. Death rates are available from 1977 to 2019 for males and females aged from 0 to 99. Segmented by `sex ∈ (:male, :female)`
 
@@ -69,7 +69,7 @@ end
 
 """
 
-    `frpop`
+    frpop
 
 French census datas, sourced from the Human mortality database (not exaclty the same series as hmd_rates[:fr]). 
 
