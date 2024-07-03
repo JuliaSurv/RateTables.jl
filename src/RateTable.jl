@@ -95,7 +95,7 @@ end
 
 predictors(::BasicRateTable) = () # empty tuple. 
 predictors(rt::RateTable) = keys(rt.axes)
-availlable_covariates(rt::RateTable, axe) = rt.axes[axe]
+available_covariates(rt::RateTable, axe) = rt.axes[axe]
 
 Base.getindex(rt::RateTable, arg)       = rt.map[arg]
 Base.getindex(rt::RateTable, args...)   = rt.map[args]
