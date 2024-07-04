@@ -24,10 +24,10 @@ hmd_rates
 This `hmd_rates` rate table represents mortality rates extracted from the [Human Mortality Database (HMD)](https://mortality.org). The output of the REPL shows that we have a `RateTable` object with two covariates `:country` and `:sex`. You can query the available covariates of a given `RateTable` as such: 
 
 ```@example 1
-availlable_covariates(hmd_rates, :sex)
+available_covariates(hmd_rates, :sex)
 ```
 
-For this specific dataset, the number of countries is huge and calling `availlable_covariates(hmd_rates, :country)` won't be very useful. Thus, for convenience and only for this dataset we provided details on the country codes separately in another constant object called `hmd_countries`:
+For this specific dataset, the number of countries is huge and calling `available_covariates(hmd_rates, :country)` won't be very useful. Thus, for convenience and only for this dataset we provided details on the country codes separately in another constant object called `hmd_countries`:
 
 ```@example 1
 hmd_countries
@@ -52,7 +52,7 @@ Recall that the daily hazard rate of mortality is defined as $-\log(1 - q_x)/365
 - The `date` parameter should be provided in days as well, with the same conversion factor. 
 - The format of other covariates may vary between rate tables, but it's essential to consider that their order is significant.
 
-The `sex` covariate typically has values such as `:male` and `:female`, and sometimes `:total`. For the `hmd_rates` table, we have previously observed two additional covariates: `country` and `sex`. Recall that you can use the `availlable_covariates` function to obtain these informations.
+The `sex` covariate typically has values such as `:male` and `:female`, and sometimes `:total`. For the `hmd_rates` table, we have previously observed two additional covariates: `country` and `sex`. Recall that you can use the `available_covariates` function to obtain these informations.
 
 There are several querying syntax, all lowering to the same code. You are free to choose the syntax that you prefer. Depending on the querying syntax, the order of the passed arguments can be significant. For instance, the daily hazard rate for a Slovene male, on his 20th birthday, which happens to fall on the tenth of January 2010, can be queried using one of the following syntaxes:  
 
