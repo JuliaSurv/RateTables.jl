@@ -28,7 +28,7 @@ struct Life<:Distributions.ContinuousUnivariateDistribution
         # Then go to the next two cells: 
         while (k < K) || (l < L)
             i,j,k,l = i+1, j+1, k+1, l+1
-            if (k < K) || (l < L) # We go →↓ or ↓→
+            if (k < K) && (l < L) # We go →↓ or ↓→
                 push!(∂t, RT_DAYS_IN_YEAR - ∂t[2], ∂t[2])
                 push!(λ, brt.values[i,j], brt.values[k,l])
             else
