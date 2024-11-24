@@ -110,8 +110,9 @@ $$\mathbf{E}(P) = \int_0^\inf S_p (t) dt = \sum_{j=0}^\inf \frac{S_p(t_j)}{\lamb
 
 Two approximations are made when the life gets out of the life table:
 
-- The last line of the ratetable is assumed to last until eternity. Indeed, the last line represents persons that are already 110 years old, and thus assuming that their future death rates are constants is not that much of an issue. 
-- When on the other hand a life exits the ratetable from the right, i.e. into the future but at a young age, we assume the last column of the rate table to define the future for this person.
+- When the person reaches the last line, she continues to move right. 
+- When the person reaches the last column, she continues to moves down.
+- The last cell lasts for eternity. 
 
 All this is implemented as a method for the `Distributions.expectation` function, since Lifes are random variables:
 
