@@ -102,7 +102,7 @@ Base.getindex(rt::RateTable, args...)   = rt.map[args]
 Base.getindex(rt::RateTable; kwargs...) = getindex(rt, collect(kwargs[n] for n in keys(rt.axes))...)
 
 # Helper function. 
-dty(t,minval,maxval) = min(Int(trunc(t*RT_YEARS_IN_DAY))-minval+1,maxval-minval+1)
+dty(t,minval,maxval) = max(min(Int(trunc(t*RT_YEARS_IN_DAY))-minval+1,maxval-minval+1),1)
 
 """
     daily_hazard(rt::BasicRateTable, age, date)
