@@ -70,6 +70,10 @@ using RData
             @test e+a <= 120*365.241
         end
     end
+
+    @testset "Dont go out of bound" begin
+        daily_hazard(survexp_fr[:male], 20*365.241, (survexp_fr[:male].extrema_year[1]-1)*365.241+12)
+    end
 end
 
 
