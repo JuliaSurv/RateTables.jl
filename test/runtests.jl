@@ -76,7 +76,7 @@ using RData
     end
 
     @testset "Test show method running" begin
-        show(slopop)^
+        show(slopop)
         show(slopop[:male])
     end
 end
