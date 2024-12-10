@@ -82,10 +82,10 @@ function Base.show(io::IO, rt::BasicRateTable)
     compact = get(io, :compact, false)
     if !compact 
         print(io, "BasicRateTable:\n")
-        print(io, "    ages, in years from $(rt.age_min) to $(rt.age_max) (in days from $(RT_DAYS_IN_YEAR*rt.age_min) to $(RT_DAYS_IN_YEAR*age_max))\n")
+        print(io, "    ages, in years from $(rt.age_min) to $(rt.age_max) (in days from $(RT_DAYS_IN_YEAR*rt.age_min) to $(RT_DAYS_IN_YEAR*rt.age_max))\n")
         print(io, "    date, in years from $(rt.year_min) to $(rt.year_max) (in days from $(RT_DAYS_IN_YEAR*rt.year_min) to $(RT_DAYS_IN_YEAR*rt.year_max)) \n")
     else
-        print(io, "BRT($(rt.age_min)..$(rt.age_max) × $(rt.year_min)..$(year_max))")
+        print(io, "BRT($(rt.age_min)..$(rt.age_max) × $(rt.year_min)..$(rt.year_max))")
     end
 end
 function Base.show(io::IO, rt::RateTable)
