@@ -5,7 +5,7 @@ abstract type AbstractRateTable end
 struct BasicRateTable <: AbstractRateTable
     values::Array{Float64,2}
     age_min::Int64
-    age_max::INt64
+    age_max::Int64
     year_min::Int64
     year_max::Int64
     function BasicRateTable(values,ages,years)
