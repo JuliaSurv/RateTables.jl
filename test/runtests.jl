@@ -74,6 +74,11 @@ using RData
     @testset "Dont go out of bound" begin
         daily_hazard(survexp_fr[:male], 20*365.241, (survexp_fr[:male].year_min-1)*365.241+12)
     end
+
+    @testset "Test show method running" begin
+        show(slopop)^
+        show(slopop[:male])
+    end
 end
 
 
