@@ -4,12 +4,14 @@
 abstract type AbstractRateTable end
 struct BasicRateTable <: AbstractRateTable
     values::Array{Float64,2}
-    extrema_age::Tuple{Int64,Int64}
-    extrema_year::Tuple{Int64,Int64}
+    age_min::Int64
+    age_max::INt64
+    year_min::Int64
+    year_max::Int64
     function BasicRateTable(values,ages,years)
         @assert all(diff(years) .== 1)
         @assert all(diff(ages) .== 1)
-        return new(values, extrema(ages), extrema(years))
+        return new(values, extrema(ages)..., extrema(years)...)
     end
 end
 
@@ -80,10 +82,10 @@ function Base.show(io::IO, rt::BasicRateTable)
     compact = get(io, :compact, false)
     if !compact 
         print(io, "BasicRateTable:\n")
-        print(io, "    ages, in years from $(rt.extrema_age[1]) to $(rt.extrema_age[2]) (in days from $(RT_DAYS_IN_YEAR*rt.extrema_age[1]) to $(RT_DAYS_IN_YEAR*rt.extrema_age[2]))\n")
-        print(io, "    date, in years from $(rt.extrema_year[1]) to $(rt.extrema_year[2]) (in days from $(RT_DAYS_IN_YEAR*rt.extrema_year[1]) to $(RT_DAYS_IN_YEAR*rt.extrema_year[2])) \n")
+        print(io, "    ages, in years from $(rt.age_min) to $(rt.age_max) (in days from $(RT_DAYS_IN_YEAR*rt.age_min) to $(RT_DAYS_IN_YEAR*age_max))\n")
+        print(io, "    date, in years from $(rt.year_min) to $(rt.year_max) (in days from $(RT_DAYS_IN_YEAR*rt.year_min) to $(RT_DAYS_IN_YEAR*rt.year_max)) \n")
     else
-        print(io, "BRT($(rt.extrema_age[1])..$(rt.extrema_age[2]) × $(rt.extrema_year[1])..$(rt.extrema_year[2]))")
+        print(io, "BRT($(rt.age_min)..$(rt.age_max) × $(rt.year_min)..$(year_max))")
     end
 end
 function Base.show(io::IO, rt::RateTable)
@@ -113,7 +115,7 @@ This function queries daily hazard values from a given BasicRateTable.
 The parameters `age` and `date` have to be in days (1 year = $(RT_DAYS_IN_YEAR) days).
 Potential args and kwargs will be used to subset the ratetable.
 """
-@inline daily_hazard(rt::BasicRateTable,a, d) = rt.values[dty(a,rt.extrema_age...),dty(d,rt.extrema_year...)]
+@inline daily_hazard(rt::BasicRateTable,a, d) = rt.values[dty(a, rt.age_min, rt.age_max),dty(d, rt.year_min, rt.year_max)]
 @inline daily_hazard(rt::RateTable, a, d; kwargs...) = daily_hazard(getindex(rt; kwargs...), a, d)
 @inline daily_hazard(rt::RateTable, a, d, args...)   = daily_hazard(getindex(rt, args...),   a, d)
 

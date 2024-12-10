@@ -9,7 +9,7 @@ struct Life<:Distributions.ContinuousUnivariateDistribution
     ∂t::Vector{Float64}
     λ::Vector{Float64}
     function Life(brt::BasicRateTable,a,d)
-        i, j = dty(a, brt.extrema_age...), dty(d, brt.extrema_year...)
+        i, j = dty(a, brt.age_min, brt.age_max), dty(d, brt.year_min, brt.year_max)
     
         rem_a = RT_DAYS_IN_YEAR - rem(a, RT_DAYS_IN_YEAR)
         rem_d = RT_DAYS_IN_YEAR - rem(d, RT_DAYS_IN_YEAR)
