@@ -116,4 +116,4 @@ function Distributions.cf(L::Life, u)
     end
     return rez * euim
 end
-Distributions.pdf(L::Life, x) = ccdf(l,x)*hazard(L,x)
+Distributions.pdf(L::Life, x::Real) = ccdf(l,x)*hazard(L,x)
