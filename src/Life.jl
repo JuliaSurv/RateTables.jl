@@ -65,6 +65,7 @@ end
 Assuming the last box is infinitely wide, we calculate the cumulative hazard from ∂t and λ taken from the `Life` function.
 """
 function cumhazard(L::Life, t::Real)
+    t < 0 && return zero(t) # check for negative values. 
     Λ = 0.0
     u = 0.0
     for j in eachindex(L.∂t)
@@ -78,6 +79,15 @@ function cumhazard(L::Life, t::Real)
     end
     # We consider that the last box is in fact infinitely wide (exponential tail)
     return Λ + (t-u)*L.λ[end] 
+end
+function hazard(L::Life, t::Real)
+    t < 0 && return zero(t) # check for negative values. 
+    u = zero(t)
+    for j in eachindex(L.∂t)
+        u += L.∂t[j]
+        t < u && return L.λ[j]
+    end
+    return L.λ[end] 
 end
 Distributions.ccdf(L::Life, t::Real) = exp(-cumhazard(L::Life,t))
 function Distributions.quantile(L::Life, p::Real)
@@ -93,4 +103,16 @@ function Distributions.quantile(L::Life, p::Real)
         end
     end
     return u
+end
+function Distributions.cf(L::Life, u)
+    N = length(L.∂t)
+    Λ = 0.0
+    rez = 0.0
+    euim = exp(u*im)
+    for i in 1:N
+        λ∂tᵢ = L.λ[i] * L.∂t[i]
+        Λ += λ∂tᵢ
+        rez -= (L.λ[i] * Λ) * expm1(-λ∂tᵢ) / (u*im - L.λ[i]) 
+    end
+    return rez * euim
 end
