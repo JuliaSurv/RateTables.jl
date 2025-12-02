@@ -116,4 +116,20 @@ function Distributions.cf(L::Life, u)
     end
     return rez * euim
 end
-Distributions.pdf(L::Life, x::Real) = ccdf(L,x)*hazard(L,x)
+function Distributions.pdf(L::Life, t::Real) 
+    t ≤ 0 && return zero(t)
+    Λ = 0.0
+    u = 0.0
+    for j in eachindex(L.∂t)
+        u += L.∂t[j]
+        if t <= u
+            local λj = L.λ[j]
+            local τj = t - (u - L.∂t[j])
+            return λj * exp(- (Λ + λj * τj))
+        else
+            Λ += L.λ[j] * L.∂t[j]
+        end
+    end
+    λlast = L.λ[end]
+    return λlast * exp(-Λ - λlast * (t - u))
+end
