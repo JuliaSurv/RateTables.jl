@@ -105,16 +105,17 @@ function Distributions.quantile(L::Life, p::Real)
     return u
 end
 function Distributions.cf(L::Life, u)
-    N = length(L.∂t)
-    Λ = 0.0
-    rez = 0.0
-    euim = exp(u*im)
-    for i in 1:N
-        λ∂tᵢ = L.λ[i] * L.∂t[i]
-        Λ += λ∂tᵢ
-        rez -= (L.λ[i] * Λ) * expm1(-λ∂tᵢ) / (u*im - L.λ[i]) 
+    t, Λ, R, R_prev, rez = 0.0, 0.0, 1.0, 1.0, 0.0
+    iu = im*u
+    for j in eachindex(L.∂t)
+        λⱼ, ∂tⱼ = L.λ[j], L.∂t[j]
+        t += ∂tⱼ
+        Λ += λⱼ * ∂tⱼ
+        R_prev = R
+        R = exp(iu * t - Λ)
+        rez += λⱼ / (iu - λⱼ) * (R - R_prev)
     end
-    return rez * euim
+    return rez
 end
 function Distributions.pdf(L::Life, t::Real) 
     t ≤ 0 && return zero(t)
