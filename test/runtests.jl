@@ -1,4 +1,5 @@
 using RateTables
+using Distributions
 using Test
 using Aqua
 using RData
@@ -78,6 +79,35 @@ using RData
     @testset "Test show method running" begin
         show(slopop)
         show(slopop[:male])
+    end
+
+    @testset "Life analytic checks (exponential case)" begin
+        # Construct a BasicRateTable with a single age/year cell and
+        # constant daily hazard lambda, so the associated Life is
+        # exactly an exponential distribution with rate lambda.
+        λ = 0.02
+        values = fill(λ, 1, 1)
+        ages = [0]
+        years = [0]
+        brt = RateTables.BasicRateTable(values, ages, years)
+        L = Life(brt, 0.0, 0.0)
+
+        # Check hazard and cumulative hazard against the exponential model
+        for t in (10.0, 100.0, 400.0, 1000.0)
+            @test isapprox(RateTables.hazard(L, t), λ; rtol=1e-12)
+            @test isapprox(RateTables.cumhazard(L, t), λ * t; rtol=1e-12)
+            @test isapprox(ccdf(L, t), exp(-λ * t); rtol=1e-12)
+            # Consistency relation h(t) = f(t) / S(t)
+            @test isapprox(RateTables.hazard(L, t), pdf(L, t) / ccdf(L, t); rtol=1e-12)
+        end
+
+        # Analytic expression for E[T^k * exp(-T)] when T ~ Exp(λ):
+        #   E[T^k * exp(-T)] = λ * Γ(k+1) / (1 + λ)^(k+1)
+        for k in 0:3
+            theo = λ * factorial(k) / (1 + λ)^(k + 1)
+            emp = RateTables.shifted_moment(L, k)
+            @test isapprox(emp, theo; rtol=1e-10, atol=1e-12)
+        end
     end
 end
 

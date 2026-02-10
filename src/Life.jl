@@ -89,7 +89,7 @@ function hazard(L::Life, t::Real)
     end
     return L.λ[end] 
 end
-Distributions.ccdf(L::Life, t::Real) = exp(-cumhazard(L::Life,t))
+Distributions.ccdf(L::Life, t::Real) = exp(-cumhazard(L, t))
 function Distributions.quantile(L::Life, p::Real)
     Λ_target = -log(1-p)
     Λ = 0.0
@@ -133,4 +133,55 @@ function Distributions.pdf(L::Life, t::Real)
     end
     λlast = L.λ[end]
     return λlast * exp(-Λ - λlast * (t - u))
+end
+Distributions.logpdf(L::Life, t::Real) = log(pdf(L,t))
+
+
+"""
+    shifted_moment(L::Life, k::Integer)
+
+Compute the quantity E[T^k * exp(-T)] for a `Life` random variable T,
+using its piecewise-constant hazard representation. This is done by
+integrating t^k * exp(-t) * f(t) over each interval (and the
+exponential tail) in closed form.
+"""
+function shifted_moment(L::Life, k::Integer)
+    k < 0 && throw(ArgumentError("k must be nonnegative"))
+    # order of the moment in the incomplete-gamma representation
+    ν = Float64(k + 1)
+
+    # Main accumulation over the piecewise-constant hazard intervals.
+    Λ = 0.0   # cumulative hazard up to the start of current interval
+    u = 0.0   # time at start of current interval
+    res = 0.0
+
+    for j in eachindex(L.∂t)
+        Δ = L.∂t[j]
+        λ = L.λ[j]
+        if λ > 0.0
+            α = 1.0 + λ
+            a = u
+            b = u + Δ
+            # Constant factor λ * exp(-Λ + λ * a)
+            C = λ * exp(-Λ + λ * a)
+            # Integral \int_a^b t^k e^{-α t} dt via upper incomplete gamma
+            αν = α^(-ν)
+            res += C * αν * (gamma(ν, α * a) - gamma(ν, α * b))
+        end
+        Λ += L.λ[j] * Δ
+        u += Δ
+    end
+
+    # Exponential tail with rate λ_last, same as in `pdf` / `expectation`.
+    λ_last = L.λ[end]
+    if λ_last > 0.0
+        α = 1.0 + λ_last
+        a = u
+        C = λ_last * exp(-Λ + λ_last * a)
+        αν = α^(-ν)
+        # Tail integral \int_a^∞ t^k e^{-α t} dt = α^{-(k+1)} Γ(k+1, α a)
+        res += C * αν * gamma(ν, α * a)
+    end
+
+    return res
 end
