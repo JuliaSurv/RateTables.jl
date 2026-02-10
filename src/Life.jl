@@ -45,7 +45,7 @@ function Life(brt::BasicRateTable,a,d)
 Distributions.@distr_support Life 0.0 Inf
 
 # rescaling mechanisme : 
-Base.:*(c::Real, L::Life) = Life(L.∂t .* c, L.λ)
+Base.:*(c::Real, L::Life) = Life(L.∂t .* c, L.λ ./ c)
 Base.:*(L::Life, c::Real) = c*L
 Base.:/(L::Life, c::Real) = inv(c)*L
 
