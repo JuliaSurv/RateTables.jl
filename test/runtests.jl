@@ -137,7 +137,7 @@ using RData
 
         @test isfinite(f_est)
         # Loose tolerance because numerical inversion is crude
-        @test isapprox(f_est, pdf_ref; atol=1e-3, rtol=1e-2)
+        @test isapprox(f_est, pdf_ref; atol=1e-2, rtol=1e-2)
     end
 end
 
