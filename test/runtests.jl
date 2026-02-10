@@ -109,6 +109,36 @@ using RData
             @test isapprox(emp, theo; rtol=1e-10, atol=1e-12)
         end
     end
+
+    @testset "Characteristic function vs pdf consistency" begin
+        # Build a small BasicRateTable and extract a Life
+        using Distributions
+        values = [5e-4 5e-4; 5e-4 5e-4]
+        brt = RateTables.BasicRateTable(values, [0,1], [2000,2001])
+        a = 30*RateTables.RT_DAYS_IN_YEAR
+        d = 2000*RateTables.RT_DAYS_IN_YEAR
+        L = Life(brt, a, d)
+
+        t0 = 100.0 # time (in days) where we compare pdfs
+        pdf_ref = Distributions.pdf(L, t0)
+
+        # Numerical inversion of the characteristic function:
+        # f(t) = (1 / (2π)) ∫_{-U}^{U} φ(u) e^{-i u t} du
+        U = 200.0
+        N = 4001  # odd so that zero is included
+        us = range(-U, stop=U, length=N)
+        du = (2U) / (N - 1)
+
+        s = zero(ComplexF64)
+        for u in us
+            s += Distributions.cf(L, u) * exp(-im * u * t0)
+        end
+        f_est = real(s * du / (2pi))
+
+        @test isfinite(f_est)
+        # Loose tolerance because numerical inversion is crude
+        @test isapprox(f_est, pdf_ref; atol=1e-3, rtol=1e-2)
+    end
 end
 
 
