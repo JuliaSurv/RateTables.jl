@@ -8,7 +8,8 @@ This works by checking if the individual is closer to the oldest age than the la
 struct Life<:Distributions.ContinuousUnivariateDistribution
     ∂t::Vector{Float64}
     λ::Vector{Float64}
-    function Life(brt::BasicRateTable,a,d)
+end
+function Life(brt::BasicRateTable,a,d)
         i, j = dty(a, brt.age_min, brt.age_max), dty(d, brt.year_min, brt.year_max)
     
         rem_a = RT_DAYS_IN_YEAR - rem(a, RT_DAYS_IN_YEAR)
@@ -39,10 +40,15 @@ struct Life<:Distributions.ContinuousUnivariateDistribution
                 push!(λ, brt.values[m,end])
             end
         end
-        return new(∂t,λ)
+        return Life(∂t,λ)
     end
-end
 Distributions.@distr_support Life 0.0 Inf
+
+# rescaling mechanisme : 
+Base.:*(c::Real, L::Life) = Life(L.∂t .* c, L.λ)
+Base.:*(L::Life, c::Real) = c*L
+Base.:/(L::Life, c::Real) = inv(c)*L
+
 function Distributions.expectation(L::Life)
     S = 1.0
     E = 0.0
@@ -185,3 +191,5 @@ function shifted_moment(L::Life, k::Integer)
 
     return res
 end
+
+
