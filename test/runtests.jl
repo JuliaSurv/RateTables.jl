@@ -108,6 +108,14 @@ using RData
             emp = RateTables.shifted_moment(L, k)
             @test isapprox(emp, theo; rtol=1e-10, atol=1e-12)
         end
+
+        # mgf for an exponential distribution: M(u) = λ / (λ - u)
+        @test isapprox(mgf(L, 0.0), 1.0; rtol=1e-14, atol=0.0)
+        for u in (-0.01, 0.0, 0.01)
+            theo_mgf = λ / (λ - u)
+            emp_mgf = mgf(L, u)
+            @test isapprox(emp_mgf, theo_mgf; rtol=1e-10, atol=1e-12)
+        end
     end
 
     @testset "Characteristic function vs pdf consistency" begin

@@ -123,6 +123,41 @@ function Distributions.cf(L::Life, u)
     end
     return rez
 end
+function Distributions.mgf(L::Life, u::Real)
+    # The mgf M(u) = E[exp(u T)] exists only for u < λ_last,
+    # where λ_last is the hazard on the (infinite) tail interval.
+    λ_last = L.λ[end]
+    u ≥ λ_last && throw(DomainError(u, "mgf is undefined for u ≥ λ_last"))
+
+    t = 0.0
+    Λ = 0.0
+    R = 1.0   # exp(u * 0 - Λ(0))
+    rez = 0.0
+    tol = eps(Float64)
+
+    for j in eachindex(L.∂t)
+        Δ = L.∂t[j]
+        λ = L.λ[j]
+        t += Δ
+        Λ += λ * Δ
+        R_prev = R
+        R = exp(u * t - Λ)
+        z = u - λ
+        if abs(z) < tol * max(1.0, abs(λ))
+            # Limit z → 0 of λ/(z) * (R - R_prev)
+            rez += λ * R_prev * Δ
+        else
+            rez += λ / z * (R - R_prev)
+        end
+    end
+
+    # Add contribution of the exponential tail starting at t with hazard λ_last.
+    # For u < λ_last, this is λ_last / (λ_last - u) * R, where
+    # R = exp(u * t - Λ(t)).
+    rez += λ_last / (λ_last - u) * R
+
+    return rez
+end
 function Distributions.pdf(L::Life, t::Real) 
     t ≤ 0 && return zero(t)
     Λ = 0.0
