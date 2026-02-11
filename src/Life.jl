@@ -123,7 +123,7 @@ function Distributions.cf(L::Life, u)
     end
     return rez
 end
-function Distributions.mgf(L::Life, u::Real)
+function Distributions.mgf(L::Life, u)
     # The mgf M(u) = E[exp(u T)] exists only for u < λ_last,
     # where λ_last is the hazard on the (infinite) tail interval.
     λ_last = L.λ[end]
