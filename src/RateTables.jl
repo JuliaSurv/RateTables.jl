@@ -3,6 +3,7 @@ module RateTables
 import CSV
 using DataFrames
 using Distributions
+using SpecialFunctions: gamma
 import Distributions: ccdf, cdf, expectation
 using Base.Cartesian
 
